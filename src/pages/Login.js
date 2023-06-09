@@ -54,6 +54,8 @@ const Login = () => {
 
     if (userList.findIndex((obj) => obj.username === username) > -1) {
       store.set("user_id", 1);
+      store.set("username", username);
+      store.set("full_access", username === "superuser01" ? true : false);
       setTimeout(() => {
         setBackDropOpen(false);
         navigate("/");

@@ -104,6 +104,43 @@ const Main = ({ children }) => {
             >
               Form System
             </Typography>
+            <Box
+              sx={(theme) => ({
+                display: "inline-flex",
+                fontWeight: 500,
+                letterSpacing: "0.02857em",
+                textTransform: "uppercase",
+                padding: "8px 11px",
+                borderRadius: "4px",
+                alignItems: "center",
+                [theme.breakpoints.down("sm")]: {
+                  minWidth: 0,
+                  p: 0,
+                },
+              })}
+            >
+              <AccountCircle
+                sx={(theme) => ({
+                  mr: 1,
+                  [theme.breakpoints.down("sm")]: {
+                    mr: 0,
+                  },
+                })}
+              />
+
+              <Typography
+                variant="subtitle1"
+                noWrap
+                component="div"
+                sx={{
+                  fontSize: "0.875rem",
+                  whiteSpace: "pre-line",
+                  lineHeight: 1.25,
+                }}
+              >
+                {store.get("username")}
+              </Typography>
+            </Box>
             <Drawer anchor="left" open={open} onClose={handleDrawerClose}>
               <Box
                 sx={{ width: 250 }}
@@ -146,7 +183,7 @@ const Main = ({ children }) => {
                       justifyContent: open ? "initial" : "center",
                       px: 2.5,
                     }}
-                    onClick={() => handleNavigate("/test")}
+                    onClick={() => handleNavigate("/form/create")}
                   >
                     <ListItemIcon
                       sx={{
@@ -168,7 +205,7 @@ const Main = ({ children }) => {
                       justifyContent: open ? "initial" : "center",
                       px: 2.5,
                     }}
-                    onClick={() => handleNavigate("/")}
+                    onClick={() => handleNavigate("/list")}
                   >
                     <ListItemIcon
                       sx={{
@@ -200,7 +237,6 @@ const Main = ({ children }) => {
         })}
       >
         <DrawerHeader />
-
         {window.location.pathname === "/" ? <Dashboard /> : children}
       </Box>
     </Box>
