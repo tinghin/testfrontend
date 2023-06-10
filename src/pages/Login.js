@@ -97,7 +97,7 @@ const Login = () => {
             
           })}
         >   
-          <Box sx={{borderRadius:'2.5%',backgroundColor:"white",height: "60vh", p:5,m:12}}>
+          <Box sx={{borderRadius:'2.5%',backgroundColor:"white",height: "55vh", p:5,mr:25, ml:25,mt:10,mb:5}}>
           
           <Typography sx={{ color: "#3e4444" }} variant="h4" align="center">
           <img src={HkmuIcon} style={{height:'125px'}}/>
