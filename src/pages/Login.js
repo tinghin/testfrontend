@@ -9,6 +9,8 @@ import TextField from "@mui/material/TextField";
 import BackDrop from "../components/BackDrop";
 import Alert from "../components/Alert";
 import { useNavigate } from "react-router-dom";
+import bgImg from '../img/bg-01.jpg';
+import HkmuIcon from "../img/hkmu.png"
 import store from "store";
 
 const Login = () => {
@@ -81,17 +83,25 @@ const Login = () => {
         alertContent={alertData.content}
         handleClose={() => setAlertOpen(false)}
       />
-      <Paper elevation={3}>
+      <div>
+      <Paper elevation={3} sx={{backgroundImage:`url(${bgImg})`,
+            backgroundRepeat:'no-repeat',backgroundPosition: 'center',backgroundSize:'cover', opacity:0.8}}>
         <Box
           sx={(theme) => ({
             width: "100%",
-            zIndex: 10,
-            pt: 5,
+            zIndex: 5,
+            pt: 3,
             pb: 1.5,
-            height: "95vh",
+            height: "100vh",
+            // backgroundColor:"white"
+            
           })}
-        >
+        >   
+          <Box sx={{borderRadius:'2.5%',backgroundColor:"white",height: "60vh", p:5,m:12}}>
+          
           <Typography sx={{ color: "#3e4444" }} variant="h4" align="center">
+          <img src={HkmuIcon} style={{height:'125px'}}/>
+          <br />
             Login
           </Typography>
           <Box
@@ -150,7 +160,9 @@ const Login = () => {
             </Grid>
           </Box>
         </Box>
+        </Box>
       </Paper>
+      </div>
     </Fragment>
   );
 };
