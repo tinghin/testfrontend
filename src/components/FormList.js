@@ -131,7 +131,7 @@ const FormList = () => {
           component="h1"
           variant="h5"
           align="center"
-          // sx={{ fontFamily: "monospace" }}
+          sx={{ color: "#5f6971" }}
         >
           Form List
         </Typography>
