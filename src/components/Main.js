@@ -7,6 +7,7 @@ import FormatListNumberedRtlIcon from "@mui/icons-material/FormatListNumberedRtl
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Drawer from "@mui/material/Drawer";
 import AppBar from "@mui/material/AppBar";
@@ -14,6 +15,7 @@ import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import ListItemButton from "@mui/material/ListItemButton";
 import Dashboard from "./Dashboard";
+import FormList from "./FormList";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
@@ -42,6 +44,8 @@ const Main = ({ children }) => {
   const handleDrawerOpen = () => {
     setOpen(true);
   };
+
+  const logOut = () => {};
 
   const handleNavigate = (targetRoute) => {
     handleDrawerClose();
@@ -119,15 +123,16 @@ const Main = ({ children }) => {
                 },
               })}
             >
-              <AccountCircle
-                sx={(theme) => ({
-                  mr: 1,
-                  [theme.breakpoints.down("sm")]: {
-                    mr: 0,
-                  },
-                })}
-              />
-
+              <IconButton size="small" onClick={() => {}}>
+                <AccountCircle
+                  sx={(theme) => ({
+                    mr: 1,
+                    [theme.breakpoints.down("sm")]: {
+                      mr: 0,
+                    },
+                  })}
+                />
+              </IconButton>
               <Typography
                 variant="subtitle1"
                 noWrap
@@ -237,7 +242,7 @@ const Main = ({ children }) => {
         })}
       >
         <DrawerHeader />
-        {window.location.pathname === "/" ? <Dashboard /> : children}
+        {window.location.pathname === "/" ? <FormList /> : children}
       </Box>
     </Box>
   );

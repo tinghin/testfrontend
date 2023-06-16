@@ -9,9 +9,16 @@ import TextField from "@mui/material/TextField";
 import BackDrop from "../components/BackDrop";
 import Alert from "../components/Alert";
 import { useNavigate } from "react-router-dom";
-import bgImg from '../img/bg-01.jpg';
-import HkmuIcon from "../img/hkmu.png"
+import bgImg from "../img/bg-01.jpg";
+import HkmuIcon from "../img/hkmu.png";
 import store from "store";
+import { validateLogin } from "../datasource/login";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import InputLabel from "@mui/material/InputLabel";
+import IconButton from "@mui/material/IconButton";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputAdornment from "@mui/material/InputAdornment";
 
 const Login = () => {
   const userList = [
@@ -33,6 +40,12 @@ const Login = () => {
   });
   const navigate = useNavigate();
   const [backdropOpen, setBackDropOpen] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
   const handleUserNameChange = (e) => {
     setUserName(e.target.value);
@@ -51,17 +64,20 @@ const Login = () => {
     setAlertOpen(true);
   };
 
-  const handleSignIn = () => {
+  const handleSignIn = async () => {
     setBackDropOpen(true);
-
-    if (userList.findIndex((obj) => obj.username === username) > -1) {
-      store.set("user_id", 1);
-      store.set("username", username);
-      store.set("full_access", username === "superuser01" ? true : false);
+    let data = { username: username, password: password };
+    const user = await validateLogin(data);
+    if (user.length > 0) {
+      const userIndex = user[0];
+      store.set("username", userIndex.username);
+      store.set("title", userIndex.title);
+      store.set("office", userIndex.office);
+      store.set("full_access", userIndex.full_access === "Y" ? true : false);
       setTimeout(() => {
         setBackDropOpen(false);
         navigate("/");
-      }, 2000);
+      }, 1000);
     } else {
       buildAlert({
         // Alert Type: success, info, warning, error
@@ -84,84 +100,119 @@ const Login = () => {
         handleClose={() => setAlertOpen(false)}
       />
       <div>
-      <Paper elevation={3} sx={{backgroundImage:`url(${bgImg})`,
-            backgroundRepeat:'no-repeat',backgroundPosition: 'center',backgroundSize:'cover', opacity:0.8}}>
-        <Box
-          sx={(theme) => ({
-            width: "100%",
-            zIndex: 5,
-            pt: 3,
-            pb: 1.5,
-            height: "100vh",
-            // backgroundColor:"white"
-            
-          })}
-        >   
-          <Box sx={{borderRadius:'2.5%',backgroundColor:"white",height: "55vh", p:5,mr:25, ml:25,mt:10,mb:5}}>
-          
-          <Typography sx={{ color: "#3e4444" }} variant="h4" align="center">
-          <img src={HkmuIcon} style={{height:'125px'}}/>
-          <br />
-            Login
-          </Typography>
+        <Paper
+          elevation={3}
+          sx={{
+            backgroundImage: `url(${bgImg})`,
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+            opacity: 0.8,
+          }}
+        >
           <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            sx={{
-              p: 10,
-              // backgroundColor: "#d5e1df",
-              // height: "60vh",
-              // width: "80%",
-            }}
+            sx={(theme) => ({
+              width: "100%",
+              zIndex: 5,
+              pt: 3,
+              pb: 1.5,
+              height: "100vh",
+              // backgroundColor:"white"
+            })}
           >
-            <Grid
-              container
-              spacing={1}
+            <Box
               sx={{
-                px: 1,
+                borderRadius: "2.5%",
+                backgroundColor: "white",
+                height: "55vh",
+                p: 5,
+                mr: 25,
+                ml: 25,
+                mt: 10,
+                mb: 5,
               }}
             >
-              <Grid item xs={12} align="center">
-                <FormControl sx={{ width: "100%", margin: "8px 0" }}>
-                  <TextField
-                    size="small"
-                    id="outlined-multiline-static"
-                    label={`User Name`}
-                    value={username}
-                    onChange={handleUserNameChange}
-                    name={`username`}
-                    sx={{ width: "100%" }}
-                    // error={validateMsg !== ""}
-                    // helperText={validateMsg}
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} align="center">
-                <FormControl sx={{ width: "100%", margin: "8px 0" }}>
-                  <TextField
-                    size="small"
-                    id="outlined-multiline-static"
-                    label={`Password`}
-                    value={password}
-                    onChange={handlePasswordChange}
-                    name={`password`}
-                    sx={{ width: "100%" }}
-                    // error={validateMsg !== ""}
-                    // helperText={validateMsg}
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={6}>
-                <Button variant="outlined" onClick={handleSignIn}>
-                  Login
-                </Button>
-              </Grid>
-            </Grid>
+              <Typography sx={{ color: "#3e4444" }} variant="h4" align="center">
+                <img src={HkmuIcon} style={{ height: "125px" }} />
+                <br />
+                Login
+              </Typography>
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                sx={{
+                  p: 10,
+                  // backgroundColor: "#d5e1df",
+                  // height: "60vh",
+                  // width: "80%",
+                }}
+              >
+                <Grid
+                  container
+                  spacing={1}
+                  sx={{
+                    px: 1,
+                  }}
+                >
+                  <Grid item xs={12} align="center">
+                    <FormControl sx={{ width: "100%", margin: "8px 0" }}>
+                      <TextField
+                        size="small"
+                        id="outlined-multiline-static"
+                        label={`User Name`}
+                        value={username}
+                        onChange={handleUserNameChange}
+                        name={`username`}
+                        sx={{ width: "100%" }}
+                        // error={validateMsg !== ""}
+                        // helperText={validateMsg}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} align="center">
+                    <FormControl
+                      variant="outlined"
+                      sx={{ width: "100%", margin: "8px 0" }}
+                    >
+                      <InputLabel>Password</InputLabel>
+                      <OutlinedInput
+                        size="small"
+                        value={password}
+                        onChange={handlePasswordChange}
+                        name={"password"}
+                        id="outlined-adornment-password"
+                        type={showPassword ? "text" : "password"}
+                        endAdornment={
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={handleClickShowPassword}
+                              onMouseDown={handleMouseDownPassword}
+                              edge="end"
+                            >
+                              {showPassword ? (
+                                <VisibilityOff />
+                              ) : (
+                                <Visibility />
+                              )}
+                            </IconButton>
+                          </InputAdornment>
+                        }
+                        label="Password"
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Button variant="outlined" onClick={handleSignIn}>
+                      Login
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Box>
+            </Box>
           </Box>
-        </Box>
-        </Box>
-      </Paper>
+        </Paper>
       </div>
     </Fragment>
   );
